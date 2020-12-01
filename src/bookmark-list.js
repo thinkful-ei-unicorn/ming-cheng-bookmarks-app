@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import store from './store';
 import api from './api'
+import item from './item'
 
 /*
 const generateAddBookmarkPage = function () {
@@ -155,6 +156,9 @@ const handleNewItemSubmit = function (){
     const title = $('#title').val();
     const rating = $('#rating').val();
     const description = $('#description').val();
+
+    item.validateUrl(url);
+    item.validateTitle(title);
 
     $('#url').val('');
     $('#title').val('');
