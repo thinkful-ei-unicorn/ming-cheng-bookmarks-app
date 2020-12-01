@@ -140,10 +140,17 @@ const render = function () {
   let items = [...store.items];
 
   // render the shopping list in the DOM
-  const bookmarkListItemsString = generateBookmarkItemsString(items);
   
+  if (store.filter === 0){
+    const bookmarkListItemsString = generateBookmarkItemsString(items);
+    $('.js-bookmark-list').html(bookmarkListItemsString);
+  }else {
+    items = items.filter(item => item.rating >= store.filter);
+    let html = generateBookmarkItemsString(items);
+    $('.js-bookmark-list').html(html);
+  }
   // insert that HTML into the DOM
-  $('.js-bookmark-list').html(bookmarkListItemsString);
+  
   showCollapsible();
 };
 

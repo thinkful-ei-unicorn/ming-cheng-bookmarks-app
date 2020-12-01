@@ -40,7 +40,8 @@ const findAndUpdate = function (id, newData) {
 
 
 const filterItemByRating = function (rating) {
-  this.items = this.items.filter(currentItem => currentItem.rating >= rating);
+  //this.items = this.items.filter(currentItem => currentItem.rating >= rating);
+  this.filter = rating;
 }
 
 
