@@ -3,88 +3,101 @@ import store from './store';
 import api from './api'
 import item from './item'
 
-/*
-const generateAddBookmarkPage = function () {
-  console.log("page generate")
-  return `<h1>My Bookmarks</h1>
-  <form id="js-bookmark-list-form">
-    <div class="error-container">some text</div>
-
-    
-    <label for="url">New Bookmarks:</label>
-    <input id="url" type="text" name="url" placeholder="http://samplelink.code/newbookmarks" required><br><br>
-
-    <label for="title">Title:</label>
-    <input id="title" type="text" name="title" placeholder="Music"><br><br>
-
-    <label for="rating">rating</label>
-    <input id="rating" type="text" name="rating" placeholder="eg. 1-5"><br><br>
-
-    <label for="description"></label>
-    <textarea id="description" name="description" placeholder="Add a description (optional)"></textarea><br><br>
-    <button type="submit">add New Bookmarks</button>
-    </form>
-    
-    <select id="mySelect" name="property" size="1">
-      <option value="1">Rating 1 star</option>
-      <option value="2">Rating 2 star</option>
-      <option value="3">Rating 3 star</option>
-      <option value="4">Rating 4 star</option>
-      <option value="5">Rating 5 star</option>
-    </select>
-      `
-}
-*/
-
-const handleFilterClick = function () {
-$('.dropdown').on('change', '#mySelect', () => {
-  let filterValue = $('#mySelect, option:selected').val();
-  console.log(filterValue)
-  store.filterItemByRating(filterValue);
-  //store.filter = filterValue;
-  render();
-})
-
-};
 
 
 const generateItemElement = function (item) {
   let itemTitle = `<p>${item.title}</p>`
+
+  if (item.expanded){
     return `
       <li class="js-item-element" data-item-id="${item.id}">
-        <button type="button" class="collapsible">${itemTitle} Rating: ${item.rating} stars</button>
-        <div class="content">
+        
+        <div>
+          <p>${itemTitle}</p>
+          <p>Rating: ${item.rating}</p>
           <p>Description: ${item.desc}</p>
           <button onclick="window.open('${item.url}', '_blank'); return false;">Visit site</button>
           <div class="shopping-item-controls">
             <button class="shopping-item-delete js-item-delete">
               <span class="button-label">delete</span>
             </button>
+            <button class="shopping-item-toggle js-item-toggle">
+              <span class="button-label">close</span>
+            </button>
           </div>
         </div>
       </li>`;
-      
-  };
-/*
-const generateItemElement = function (item) {
-let itemTitle = `<p>${item.title}</p>`
-  return `
-    <li class="js-item-element" data-item-id="${item.id}">
-      ${itemTitle}
-      <p>${item.desc}</p>
-      <p>Rating: ${item.rating}</p>
-      <div class="shopping-item-controls">
-        <button class="shopping-item-toggle js-item-toggle">
-          <span class="button-label">check</span>
-        </button>
-        <button class="shopping-item-delete js-item-delete">
-          <span class="button-label">delete</span>
-        </button>
+  }else {
+    return `
+    <li class="js-item-element bookmark-item-expanded" data-item-id="${item.id}">
+      <div class="bookmark-list-box collapsible">
+        <span class="bookmark-item">${item.title}</span>
+        <div class="rating-box">Rating: ${item.rating} stars</div>
       </div>
-    </li>`;
-    
+    </li>
+    `
+  }
+      
 };
-*/
+
+const handleItemExpandClicked = function () {
+  $('.main-view').on('click', '.bookmark-item-expanded', event => {
+    console.log('expanded')
+    const id = getItemIdFromElement(event.currentTarget);
+    const item = store.findById(id);
+    item.expanded = !item.expanded;
+    render();
+  });
+};
+
+const handleCloseClicked = function () {
+  $('.main-view').on('click', '.js-item-toggle', event => {
+    const id = getItemIdFromElement(event.currentTarget);
+    const item = store.findById(id);
+    item.expanded = !item.expanded;
+    render();
+  });
+};
+
+const generateAddBookmarkPage = function () {
+  if(store.adding) {
+    let html = `
+    <div class="error-container">some text</div>
+    <form id="js-bookmark-list-form">
+      
+      <label for="url">New Bookmarks:</label>
+      <input id="url" type="text" name="url" placeholder="http://samplelink.code/newbookmarks" required><br><br>
+  
+      <label for="title">Title:</label>
+      <input id="title" type="text" name="title" placeholder="Music"><br><br>
+  
+      <label for="description"></label>
+      <textarea id="description" name="description" placeholder="Add a description (optional)"></textarea><br><br>
+
+      <label for="rating">rating</label><br>
+      <div class="txt-center">
+          <input id="star5" name="rating" type="radio" value="5" class="radio-button-hide"/>
+          <label for="star5">⭐ ⭐ ⭐ ⭐ ⭐</label><br>
+          <input id="star4" name="rating" type="radio" value="4" class="radio-button-hide"/>
+          <label for="star4">⭐ ⭐ ⭐ ⭐</label><br>
+          <input id="star3" name="rating" type="radio" value="3" class="radio-button-hide"/>
+          <label for="star3">⭐ ⭐ ⭐</label><br>
+          <input id="star2" name="rating" type="radio" value="2" class="radio-button-hide"/>
+          <label for="star2">⭐ ⭐</label><br>
+          <input id="star1" name="rating" type="radio" value="1" class="radio-button-hide"/>
+          <label for="star1">⭐</label><br>
+      <br>
+      <button type="submit">add Bookmarks</button>
+      <button id="cancel" type="button">Cancel</button>
+      </form>
+    `
+    $('.new-bookmark-form').html(html);
+  }else {
+    $('.new-bookmark-form').empty();
+  }
+render();
+}
+
 const generateBookmarkItemsString = function (bookmarkList) {
   const items = bookmarkList.map(item => generateItemElement(item));
   return items.join('');
@@ -115,53 +128,73 @@ const handleCloseError = function () {
   });
 };
 
-const showCollapsible = function () {
-  let coll = document.getElementsByClassName("collapsible");
-  let i;
-
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      let content = this.nextElementSibling;
-      if (content.style.maxHeight){
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      } 
-      store.items.expanded = !store.items.expanded;
-      //console.log(store.items.id, store.items.expanded)
-    });
-  }
-}
-
 const render = function () {
   renderError();
   // Filter item list if store prop is true by item.checked === false
   let items = [...store.items];
+  items = items.filter(item => item.rating >= store.filter)
 
+  const bookmarkListItemsString = generateBookmarkItemsString(items);
   // render the shopping list in the DOM
-  
-  if (store.filter === 0){
-    const bookmarkListItemsString = generateBookmarkItemsString(items);
+
+  if (store.adding === false){
+    let html = `
+      <div class="new-bookmark-form">
+      </div>
+      <div class="first-page-view">
+      <header>
+        <h2>My Bookmarks</h2>
+        <form id="initial-page">
+          <button class="first-page-new">
+            <span class="button-label">New bookmark</span>
+          </button>
+          <select id="mySelect" name="mySelect">
+            <option>
+              <span class="button-label"></span>Filter By</span>
+            </option>
+            <option value="1">Rating 1 star</option>
+            <option value="2">Rating 2 star</option>
+            <option value="3">Rating 3 star</option>
+            <option value="4">Rating 4 star</option>
+            <option value="5">Rating 5 star</option>
+              </select>
+        <form>
+        </header>
+        <ul class="bookmark-list js-bookmark-list"></ul>
+        </div>
+    `
+    $('.main-view').html(html);
     $('.js-bookmark-list').html(bookmarkListItemsString);
   }else {
-    items = items.filter(item => item.rating >= store.filter);
-    let html = generateBookmarkItemsString(items);
-    $('.js-bookmark-list').html(html);
+    $('.first-page-view').empty();
   }
-  // insert that HTML into the DOM
-  
-  showCollapsible();
+ 
 };
 
+const handleFirstPageNewBookmark = function () {
+  $('.main-view').on('click', '.first-page-new', (event) => {
+    event.preventDefault();
+    store.adding = true;
+    generateAddBookmarkPage();
+  })
+}
+
+
+const handleCancel = function () {
+  $('.main-view').on('click', '#cancel', event => {
+    event.preventDefault();
+    store.adding = false;
+    generateAddBookmarkPage();
+    render();
+  })
+}
 
 const handleNewItemSubmit = function (){
-  $('#js-bookmark-list-form').submit(function (event) {
+  $('.main-view').on('submit', '#js-bookmark-list-form', event => {
     event.preventDefault();
-    console.log('click')
     const url = $('#url').val();
     const title = $('#title').val();
-    const rating = $('#rating').val();
+    const rating = $("input[name='rating']:checked").val();
     const description = $('#description').val();
 
     item.validateUrl(url);
@@ -169,34 +202,29 @@ const handleNewItemSubmit = function (){
 
     $('#url').val('');
     $('#title').val('');
-    $('#rating').val('');
+    $("input[name='rating']").val('');
     $('#description').val('');
     
     api.createItem(title, url, description, rating)
       .then(newItem => {
         store.addItem(newItem);
+        store.adding=false;
+        store.filter = 0;
+        generateAddBookmarkPage();
         render();
       })
       .catch(error => store.setError(error.message))
   })
 }
-/*
-const handleNewItemSubmit = function () {
-  
-  $('#js-shopping-list-form').submit(function (event) {
-    event.preventDefault();
-    const newItemName = $('.js-shopping-list-entry').val();
-    $('.js-shopping-list-entry').val('');
 
-    api.createItem(newItemName)
-    .then(newItem => {
-      store.addItem(newItem);
-      render();
-    })
-    .catch(error => store.setError(error.message));
-  });
+const handleFilterClick = function () {
+  $('.main-view').on('change', '#mySelect', () => {
+    let filterValue = $('#mySelect, option:selected').val();
+    store.filterItemByRating(filterValue);
+    //store.filter = filterValue;
+    render();
+  })
 };
-*/
 
 const getItemIdFromElement = function (item) {
   return $(item)
@@ -206,7 +234,7 @@ const getItemIdFromElement = function (item) {
 
 const handleDeleteItemClicked = function () {
   // like in `handleItemCheckClicked`, we use event delegation
-  return $('.js-bookmark-list').on('click', '.js-item-delete', event => {
+  return $('.main-view').on('click', '.js-item-delete', event => {
     // get the index of the item in store.items
     const id = getItemIdFromElement(event.currentTarget);
     // delete the item
@@ -222,24 +250,7 @@ const handleDeleteItemClicked = function () {
       })
   });
 };
-/*
-const handleDeleteItemClicked = function () {
-  $('.js-bookmark-list').on('click', '.js-item-delete', event => {
-    event.preventDefault();
-    const id = getItemIdFromElement(event.currentTarget);
-    api.deleteItem(id)
-      .then(() => {
-        store.findAndDelete(id);
-        render();
-      })
-      .catch(error => {
-        console.log(error);
-        store.setError(error.message);
-        renderError();
-      })
-  })
-}
-*/
+
 const handleEditShoppingItemSubmit = function () {
   $('.js-shopping-list').on('submit', '.js-edit-item', event => {
     event.preventDefault();
@@ -289,6 +300,10 @@ const bindEventListeners = function () {
   handleEditShoppingItemSubmit();
   handleCloseError();
   handleFilterClick();
+  handleFirstPageNewBookmark();
+  handleCancel();
+  handleItemExpandClicked();
+  handleCloseClicked();
 };
 // This object contains the only exposed methods from this module:
 export default {

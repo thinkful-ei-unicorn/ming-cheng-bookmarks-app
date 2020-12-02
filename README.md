@@ -8,6 +8,7 @@ User can see a list of their bookmarks when they first open the app
     All bookmarks in the list default to a "condensed" view showing only title and rating
 
 User can click on a bookmark with the icon "+" to show the "detailed" view
+    click "close" to close the detail view
     Detailed view expands to show description and a "Visit Site" link
 
 User can remove bookmarks from their bookmark list

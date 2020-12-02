@@ -16,12 +16,8 @@ const setError = function (error) {
 };
 
 const addItem = function (item) {
-  this.adding = false;
-  console.log(item)
   this.items.push(item);
-  this.adding = !this.adding;
-  console.log(this.adding)
-};
+}
 
 const findAndDelete = function (id) {
   this.items = this.items.filter(currentItem => currentItem.id !== id);
@@ -40,7 +36,6 @@ const findAndUpdate = function (id, newData) {
 
 
 const filterItemByRating = function (rating) {
-  //this.items = this.items.filter(currentItem => currentItem.rating >= rating);
   this.filter = rating;
 }
 
