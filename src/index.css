@@ -130,3 +130,24 @@ button:hover {
   border: 1px solid grey;
   padding: 20px;
 }
+
+@media all and (min-width: 600px){
+  body {
+    font-size: 1em;
+  }
+header{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+h2{
+  align-self: flex-start;
+}
+header > form {
+  align-self: flex-end;
+  justify-content: flex-end;
+}
+
+}

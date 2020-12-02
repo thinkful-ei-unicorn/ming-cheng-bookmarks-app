@@ -143,7 +143,7 @@ const render = function () {
       </div>
       <div class="first-page-view">
       <header>
-        <h2>My Bookmarks</h2>
+        
         <form id="initial-page">
           <button class="first-page-new">
             <span class="button-label">New bookmark</span>
