@@ -71,10 +71,10 @@ const generateAddBookmarkPage = function () {
       <label for="title">Title:</label>
       <input id="title" type="text" name="title" placeholder="Music"><br><br>
   
-      <label for="description"></label>
+      <label for="description">Description:</label>
       <textarea id="description" name="description" placeholder="Add a description (optional)"></textarea><br><br>
 
-      <label for="rating">rating</label><br>
+      <label for="rating">Rating:</label><br>
       <div class="txt-center">
           <input id="star5" name="rating" type="radio" value="5" class="radio-button-hide"/>
           <label for="star5">⭐ ⭐ ⭐ ⭐ ⭐</label><br>
@@ -213,7 +213,11 @@ const handleNewItemSubmit = function (){
         generateAddBookmarkPage();
         render();
       })
-      .catch(error => store.setError(error.message))
+      .catch((error) => {
+        console.log(error);
+        store.setError(error.message);
+        renderError();
+      });
   })
 }
 

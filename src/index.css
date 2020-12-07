@@ -15,7 +15,7 @@ form button {
   font-size: 14px;
   background: #000;
   color: #fff;
-  margin: 0 8px 10px 0;
+  margin: 5px 8px 10px 0;
 }
 
 .collapsible {
@@ -96,7 +96,7 @@ button:hover {
 
 .bookmark-list > li {
   margin-bottom: 20px;
-  border: 1px solid grey;
+  
   padding: 20px;
 }
 
@@ -131,7 +131,19 @@ button:hover {
   padding: 20px;
 }
 
-@media all and (min-width: 600px){
+.main-view {
+  border: 2px solid black;
+}
+
+header{
+  border: 2px solid grey;
+  margin: 0px;
+}
+
+.selected {
+  margin-right: opx;
+}
+@media all and (min-width: 800px){
   body {
     font-size: 1em;
   }
@@ -139,8 +151,7 @@ header{
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  margin-left: 25px;
-  margin-right: 25px;
+  
 }
 h2{
   align-self: flex-start;

@@ -13,6 +13,11 @@ const main = function () {
       items.forEach((item) => store.addItem(item));
       bookmarkList.render();
     })
+    .catch((error) => {
+      console.log(error);
+      store.setError(error.message);
+      renderError();
+    });
 
   bookmarkList.bindEventListeners();
   bookmarkList.render();
