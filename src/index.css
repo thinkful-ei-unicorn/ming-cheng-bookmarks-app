@@ -131,7 +131,11 @@ button:hover {
   padding: 20px;
 }
 
-.main-view {
+/* .main-view {
+  border: 2px solid black;
+} */
+
+.new-addBookmark-form{
   border: 2px solid black;
 }
 

@@ -63,7 +63,7 @@ const generateAddBookmarkPage = function () {
   if(store.adding) {
     let html = `
     <div class="error-container">some text</div>
-    <form id="js-bookmark-list-form">
+    <form id="js-bookmark-list-form" class="new-addBookmark-form">
       
       <label for="url">New Bookmarks:</label>
       <input id="url" type="text" name="url" placeholder="http://samplelink.code/newbookmarks" required><br><br>
