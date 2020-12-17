@@ -6,13 +6,14 @@ body {
   font-family: 'Roboto', sans-serif;
   width: 85%;
   margin: 0 auto;
+  font-size: 18px;
 }
 form button {
   padding: 10px 16px;
   border-radius: 10px;
   border: 0;
   font-family: Tahoma;
-  font-size: 14px;
+  
   background: #000;
   color: #fff;
   margin: 5px 8px 10px 0;
@@ -64,8 +65,11 @@ h3 {
   margin: 0;
   padding: 0%;
 }
-h1 {
+main {
   text-align: center;
+  font-size: 20px;
+  margin: 0;
+  
 }
 
 button, input[type="text"] {
@@ -82,11 +86,6 @@ button:hover {
 
 #bookmark-list-item {
   width: 250px;
-}
-
-.container {
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .bookmark-list {
@@ -142,27 +141,15 @@ button:hover {
 header{
   border: 2px solid grey;
   margin: 0px;
+  
 }
 
 .selected {
-  margin-right: opx;
-}
-@media all and (min-width: 800px){
-  body {
-    font-size: 1em;
-  }
-header{
-  display: flex;
-  justify-content: space-between;
-  padding: 5px;
-  
-}
-h2{
-  align-self: flex-start;
-}
-header > form {
-  align-self: flex-end;
-  justify-content: flex-end;
+  margin-right: 0px;
 }
 
+@media all and (min-width: 800px) {
+  form button {
+    font-size: 18px;
+  }
 }
