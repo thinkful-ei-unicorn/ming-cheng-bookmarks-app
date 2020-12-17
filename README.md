@@ -1,3 +1,13 @@
+## Bookmark App ##
+- - - -
+
+[Live Github Page](https://thinkful-ei-unicorn.github.io/ming-cheng-bookmarks-app/)
+
+Demonstrates functionality of adding and removing bookmarks via an restful API 
+
+## User stories ##
+- - - -
+
 User can add bookmarks to their bookmark list. Bookmarks contain:
     title
     url link

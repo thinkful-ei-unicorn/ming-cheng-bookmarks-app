@@ -41,7 +41,7 @@ const generateItemElement = function (item) {
 };
 
 const handleItemExpandClicked = function () {
-  $('.main-view').on('click', '.bookmark-item-expanded', event => {
+  $('.container').on('click', '.bookmark-item-expanded', event => {
     console.log('expanded')
     const id = getItemIdFromElement(event.currentTarget);
     const item = store.findById(id);
@@ -51,7 +51,7 @@ const handleItemExpandClicked = function () {
 };
 
 const handleCloseClicked = function () {
-  $('.main-view').on('click', '.js-item-toggle', event => {
+  $('.container').on('click', '.js-item-toggle', event => {
     const id = getItemIdFromElement(event.currentTarget);
     const item = store.findById(id);
     item.expanded = !item.expanded;
@@ -62,7 +62,7 @@ const handleCloseClicked = function () {
 const generateAddBookmarkPage = function () {
   if(store.adding) {
     let html = `
-    <div class="error-container">some text</div>
+    <div class="error-container">Error</div>
     <form id="js-bookmark-list-form" class="new-addBookmark-form">
       
       <label for="url">New Bookmarks:</label>
@@ -139,31 +139,34 @@ const render = function () {
 
   if (store.adding === false){
     let html = `
-      <div class="new-bookmark-form">
-      </div>
-      <div class="first-page-view">
-      <header>
-        
-        <form id="initial-page">
-          <button class="first-page-new">
-            <span class="button-label">New bookmark</span>
-          </button>
-          <select id="mySelect" name="mySelect">
-            <option>
-              <span class="button-label"></span>Filter By</span>
-            </option>
-            <option value="1">Rating 1 star</option>
-            <option value="2">Rating 2 star</option>
-            <option value="3">Rating 3 star</option>
-            <option value="4">Rating 4 star</option>
-            <option value="5">Rating 5 star</option>
-              </select>
-        <form>
-        </header>
-        <ul class="bookmark-list js-bookmark-list"></ul>
+      <h1>My Bookmarks</h1>
+      <section class="main-view">
+        <div class="new-bookmark-form">
         </div>
+        <div class="first-page-view">
+        <header>
+          
+          <form id="initial-page">
+            <button class="first-page-new">
+              <span class="button-label">New bookmark</span>
+            </button>
+            <select id="mySelect" name="mySelect">
+              <option>
+                <span class="button-label"></span>Filter By</span>
+              </option>
+              <option value="1">Rating 1 star</option>
+              <option value="2">Rating 2 star</option>
+              <option value="3">Rating 3 star</option>
+              <option value="4">Rating 4 star</option>
+              <option value="5">Rating 5 star</option>
+                </select>
+          <form>
+          </header>
+          <ul class="bookmark-list js-bookmark-list"></ul>
+          </div>
+      </section>
     `
-    $('.main-view').html(html);
+    $('.container').html(html);
     $('.js-bookmark-list').html(bookmarkListItemsString);
   }else {
     $('.first-page-view').empty();
@@ -172,7 +175,7 @@ const render = function () {
 };
 
 const handleFirstPageNewBookmark = function () {
-  $('.main-view').on('click', '.first-page-new', (event) => {
+  $('.container').on('click', '.first-page-new', (event) => {
     event.preventDefault();
     store.adding = true;
     generateAddBookmarkPage();
@@ -181,7 +184,7 @@ const handleFirstPageNewBookmark = function () {
 
 
 const handleCancel = function () {
-  $('.main-view').on('click', '#cancel', event => {
+  $('.container').on('click', '#cancel', event => {
     event.preventDefault();
     store.adding = false;
     generateAddBookmarkPage();
@@ -190,7 +193,7 @@ const handleCancel = function () {
 }
 
 const handleNewItemSubmit = function (){
-  $('.main-view').on('submit', '#js-bookmark-list-form', event => {
+  $('.container').on('submit', '#js-bookmark-list-form', event => {
     event.preventDefault();
     const url = $('#url').val();
     const title = $('#title').val();
@@ -222,7 +225,7 @@ const handleNewItemSubmit = function (){
 }
 
 const handleFilterClick = function () {
-  $('.main-view').on('change', '#mySelect', () => {
+  $('.container').on('change', '#mySelect', () => {
     let filterValue = $('#mySelect, option:selected').val();
     store.filterItemByRating(filterValue);
     //store.filter = filterValue;
@@ -238,7 +241,7 @@ const getItemIdFromElement = function (item) {
 
 const handleDeleteItemClicked = function () {
   // like in `handleItemCheckClicked`, we use event delegation
-  return $('.main-view').on('click', '.js-item-delete', event => {
+  return $('.container').on('click', '.js-item-delete', event => {
     // get the index of the item in store.items
     const id = getItemIdFromElement(event.currentTarget);
     // delete the item
@@ -272,32 +275,7 @@ const handleEditShoppingItemSubmit = function () {
       });
   });
 };
-/*
-const handleItemCheckClicked = function () {
-  $('.js-shopping-list').on('click', '.js-item-toggle', event => {
-    const id = getItemIdFromElement(event.currentTarget);
-    const item = store.findById(id);
 
-    api.updateItem(id, { checked: !item.checked })
-      .then(() => {
-        store.findAndUpdate(id, { checked: !item.checked });
-        render()
-        .catch((error) => {
-          store.setError(error.message);
-          renderError();
-        });
-      });
-    
-  });
-};
-
-const handleToggleFilterClick = function () {
-  $('.js-filter-checked').click(() => {
-    store.toggleCheckedFilter();
-    render();
-  });
-};
-*/
 const bindEventListeners = function () {
   handleNewItemSubmit();
   handleDeleteItemClicked();
